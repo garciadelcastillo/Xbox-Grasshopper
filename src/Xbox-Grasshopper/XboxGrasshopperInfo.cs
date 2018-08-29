@@ -13,14 +13,8 @@ namespace XboxGrasshopper
                 return "XboxGrasshopper";
             }
         }
-        public override Bitmap Icon
-        {
-            get
-            {
-                //Return a 24x24 pixel bitmap to represent this GHA library.
-                return null;
-            }
-        }
+        public override Bitmap Icon => Properties.Resources.xbox_controller_24;
+
         public override string Description
         {
             get
