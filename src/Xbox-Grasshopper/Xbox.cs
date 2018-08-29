@@ -13,7 +13,12 @@ namespace XboxGrasshopper
     public class Xbox : GH_Component
     {
         private XboxController _controller;
-        private bool _prevA;
+
+        private bool _padUp, _padDown, _padLeft, _padRight;
+        private bool _buttonA, _buttonB, _buttonX, _buttonY;
+        private bool _leftThumb;
+        private double _leftThumbX, _leftThumbY;
+
 
         public Xbox()
           : base("Xbox", "Xbox",
@@ -41,7 +46,26 @@ namespace XboxGrasshopper
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddTextParameter("msg", "msg", "Status messages", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("A", "A", "Is A button pressed?", GH_ParamAccess.item);
+
+            pManager.AddBooleanParameter("PadLeft", "Left", "", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("PadRight", "Right", "", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("PadUp", "Up", "", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("PadDown", "Down", "", GH_ParamAccess.item);
+
+            pManager.AddBooleanParameter("A", "A", "", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("B", "B", "", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("X", "X", "", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Y", "Y", "", GH_ParamAccess.item);
+
+            pManager.AddBooleanParameter("LeftThumb", "LT", "", GH_ParamAccess.item);
+            pManager.AddNumberParameter("LeftThumbX", "LTX", "", GH_ParamAccess.item);
+            pManager.AddNumberParameter("LeftThumbY", "LTY", "", GH_ParamAccess.item);
+            //pManager.AddNumberParameter("RightThumbX", "RTX", "", GH_ParamAccess.item);
+            //pManager.AddNumberParameter("RightThumbY", "RTY", "", GH_ParamAccess.item);
+
+            //pManager.AddBooleanParameter("LeftButton", "A", "", GH_ParamAccess.item);
+            //pManager.AddNumberParameter("LeftThumbY", "LTY", "", GH_ParamAccess.item);
+            
         }
 
 
@@ -54,10 +78,24 @@ namespace XboxGrasshopper
             if (!DA.GetData(0, ref id)) return;
             if (!DA.GetData(1, ref auto)) return;
             if (!DA.GetData(2, ref interval)) return;
-            
-            DA.SetData(0, "");
-            DA.SetData(1, _prevA);
 
+            DA.SetData(0, "");
+
+            DA.SetData(1, _padLeft);
+            DA.SetData(2, _padRight);
+            DA.SetData(3, _padUp);
+            DA.SetData(4, _padDown);
+
+            DA.SetData(5, _buttonA);
+            DA.SetData(6, _buttonB);
+            DA.SetData(7, _buttonX);
+            DA.SetData(8, _buttonY);
+
+            DA.SetData(9, _leftThumb);
+            DA.SetData(10, _leftThumbX);
+            DA.SetData(11, _leftThumbY);
+
+            
             // Otherwise, back to reguar autoupdate
             if (auto)
             {
@@ -86,7 +124,19 @@ namespace XboxGrasshopper
             //    //Console.WriteLine($"Changed name: {name} {SelectedController.RightTrigger}");
             //}
 
-            _prevA = _controller.IsAPressed;
+            _padUp = _controller.IsDPadUpPressed;
+            _padDown = _controller.IsDPadDownPressed;
+            _padLeft = _controller.IsDPadLeftPressed;
+            _padRight = _controller.IsDPadRightPressed;
+
+            _buttonA = _controller.IsAPressed;
+            _buttonB = _controller.IsBPressed;
+            _buttonX = _controller.IsXPressed;
+            _buttonY = _controller.IsYPressed;
+
+            _leftThumb = _controller.IsLeftStickPressed;
+            _leftThumbX = _controller.LeftThumbStick.X;
+            _leftThumbY = _controller.LeftThumbStick.Y;
 
         }
 
